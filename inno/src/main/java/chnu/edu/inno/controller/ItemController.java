@@ -10,6 +10,8 @@ package chnu.edu.inno.controller;
 */
 
 import chnu.edu.inno.model.Item;
+import chnu.edu.inno.model.dto.request.ItemCreateRequest;
+import chnu.edu.inno.model.dto.request.ItemUpdateRequest;
 import chnu.edu.inno.model.dto.response.ApiResponse;
 import chnu.edu.inno.model.dto.response.BaseMetaData;
 import chnu.edu.inno.model.dto.response.PaginationMetaData;
@@ -21,7 +23,10 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -43,18 +48,23 @@ public class ItemController {
     }
 
     @PostMapping
-    public Item createItem(@RequestBody Item item) {
-        return itemService.createItem(item);
+    public Item createItem(@RequestBody ItemCreateRequest request) {
+        return itemService.createItem(request.toItem());
     }
 
     @PutMapping
-    public Item updateItem(@RequestBody Item item) {
-        return itemService.updateItem(item);
+    public Item updateItem(@RequestBody ItemUpdateRequest request) {
+        return itemService.updateItem(request.toItem());
     }
 
     @DeleteMapping("/{id}")
-    public void deleteItem(@PathVariable String id) {
-        itemService.deleteItemById(id);
+    public ResponseEntity<Void> deleteItem(@PathVariable String id) {
+        Item item = itemService.getItemById(id);
+        if (item == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Item not found");
+        }
+        itemService.deleteItem(item);
+        return ResponseEntity.noContent().build();
     }
 
     //----------------  More ---------------------------

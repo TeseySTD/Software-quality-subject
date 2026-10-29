@@ -16,11 +16,15 @@ import chnu.edu.inno.model.dto.response.PaginationMetaData;
 import chnu.edu.inno.repository.ItemRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
+import org.javers.spring.annotation.JaversAuditable;
+import org.javers.spring.annotation.JaversAuditableDelete;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -54,15 +58,22 @@ public class ItemService {
         return itemRepository.findById(id).orElse(null);
     }
 
+    @JaversAuditable
     public Item createItem(Item item) {
         return itemRepository.save(item);
     }
 
-    public void deleteItemById(String id) {
-        itemRepository.deleteById(id);
+    @JaversAuditableDelete
+    public void deleteItem(Item item) {
+        itemRepository.delete(item);
     }
 
+    @JaversAuditable
     public Item updateItem(Item item) {
+        Item old = itemRepository.findById(item.getId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Item not found"));
+        item.setCreatedDate(old.getCreatedDate());
+        item.setCreatedBy(old.getCreatedBy());
         return itemRepository.save(item);
     }
 

@@ -16,17 +16,20 @@ import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Objects;
+
 @Document
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
-public class Item {
+@ToString(callSuper = true)
+public class Item extends AuditMetadata {
     @Id
     private String id;
     private String name;
     private String code;
     private  int quantity;
+    private String description;
 
     public Item(String name, String code, int quantity) {
         this.name = name;
@@ -38,11 +41,11 @@ public class Item {
     public final boolean equals(Object o) {
         if (!(o instanceof Item item)) return false;
 
-        return getId().equals(item.getId());
+        return Objects.equals(getId(), item.getId());
     }
 
     @Override
     public int hashCode() {
-        return getId().hashCode();
+        return Objects.hashCode(getId());
     }
 }
