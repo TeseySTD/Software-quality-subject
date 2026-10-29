@@ -1,0 +1,24 @@
+== 1. The book (0.4 MB): 15 cold runs per version, median ==
+version          time,ms   alloc,MB    GCs   GC,ms  process,ms  top-30 CRC
+v0-original       3690.4      189.3     44      20      3812.3  5a25b605
+v1-refactor        193.4        9.7      2       9       304.1  24a2a19a
+v2-streams         204.2       18.1      4      15       336.0  e4221a8c
+v3-optimized        59.8        1.2      0       0       184.1  e4221a8c
+
+== 2. Smallest -Xmx that still works, the book ==
+v0-original    7m
+v1-refactor    7m
+v2-streams     7m
+v3-optimized   2m
+
+== 3. The book repeated 50 times: 3 runs per version, median ==
+file size: 21.1 MB
+version          time,ms   alloc,MB    GCs   GC,ms  process,ms  top-30 CRC
+v1-refactor       1815.1      384.7     11     918      1943.0  e7f7afe8
+v2-streams        2049.1      818.7     19    1049      2197.6  ffbf73bb
+v3-optimized       275.3        1.2      0       0       361.2  ffbf73bb
+
+== 3b. Smallest -Xmx that still works, the big file ==
+v1-refactor    384m
+v2-streams     384m
+v3-optimized   2m

@@ -9,12 +9,12 @@ package skoreiko.chnu.edu;
  * @since 08.10.2026 - 17.01
  */
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Prints the most frequent words of a text file.
@@ -23,28 +23,30 @@ public class Main {
 
     private static final String DEFAULT_FILE = "src/txt/harry.txt";
     private static final int DEFAULT_TOP = 30;
+    private static final String SKIP_STOP_WORDS = "--skip-stop-words";
 
     public static void main(String[] args) {
-        Path file = Path.of(args.length > 0 ? args[0] : DEFAULT_FILE);
-        int top = args.length > 1 ? parseTop(args[1]) : DEFAULT_TOP;
+        List<String> positional = new ArrayList<>(List.of(args));
+        boolean skipStopWords = positional.remove(SKIP_STOP_WORDS);
+
+        Path file = Path.of(positional.size() > 0 ? positional.get(0) : DEFAULT_FILE);
+        int top = positional.size() > 1 ? parseTop(positional.get(1)) : DEFAULT_TOP;
 
         long start = System.nanoTime();
-        try {
-            // The file is not valid UTF-8, so the charset is set explicitly.
-            String text = Files.readString(file, StandardCharsets.ISO_8859_1);
-
-            List<String> words = WordFrequency.tokenize(text);
-            Map<String, Long> counts = WordFrequency.count(words);
-
-            WordFrequency.top(counts, top)
-                    .forEach(entry -> System.out.println(entry.word() + " " + entry.count()));
-
-            System.out.println("------");
-            System.out.println("Words: " + words.size() + ", distinct: " + counts.size());
+        WordFrequency counter = new WordFrequency(skipStopWords);
+        // The file is streamed in chunks, it is never loaded into memory as a whole.
+        try (InputStream in = Files.newInputStream(file)) {
+            counter.addAll(in);
         } catch (IOException e) {
             System.err.println("Cannot read file " + file + ": " + e);
             System.exit(1);
         }
+
+        for (WordFrequency.WordCount entry : counter.top(top)) {
+            System.out.println(entry.word() + " " + entry.count());
+        }
+        System.out.println("------");
+        System.out.println("Words: " + counter.totalWords() + ", distinct: " + counter.distinctWords());
         System.out.println("Time, ms: " + Duration.ofNanos(System.nanoTime() - start).toMillis());
     }
 
