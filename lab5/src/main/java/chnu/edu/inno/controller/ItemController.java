@@ -1,13 +1,12 @@
 package chnu.edu.inno.controller;
 
-
-/*
-  @author   george
-  @project   inno
-  @class  ItemController
-  @version  1.0.0 
-  @since 27/09/2026 - 19.09
-*/
+/**
+ * @author Rout
+ * @version 1.0.0
+ * @project lab5
+ * @class src\main\java\chnu\edu\inno\controller\ItemController
+ * @since 13.11.2026 - 23.55
+ */
 
 import chnu.edu.inno.model.Item;
 import chnu.edu.inno.model.dto.response.ApiResponse;

@@ -1,13 +1,12 @@
 package chnu.edu.inno.repository;
 
-
-/*
-  @author   george
-  @project   inno
-  @class  ItemRepository
-  @version  1.0.0 
-  @since 27/09/2026 - 19.04
-*/
+/**
+ * @author Rout
+ * @version 1.0.0
+ * @project lab5
+ * @class src\main\java\chnu\edu\inno\repository\ItemRepository
+ * @since 13.11.2026 - 23.55
+ */
 
 import chnu.edu.inno.model.Item;
 import org.springframework.data.mongodb.repository.MongoRepository;

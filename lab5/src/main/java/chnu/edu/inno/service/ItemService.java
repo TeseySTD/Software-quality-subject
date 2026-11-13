@@ -1,13 +1,12 @@
 package chnu.edu.inno.service;
 
-
-/*
-  @author   george
-  @project   inno
-  @class  ItemService
-  @version  1.0.0 
-  @since 27/09/2026 - 19.05
-*/
+/**
+ * @author Rout
+ * @version 1.0.0
+ * @project lab5
+ * @class src\main\java\chnu\edu\inno\service\ItemService
+ * @since 13.11.2026 - 23.55
+ */
 
 import chnu.edu.inno.model.Item;
 import chnu.edu.inno.model.dto.response.ApiResponse;

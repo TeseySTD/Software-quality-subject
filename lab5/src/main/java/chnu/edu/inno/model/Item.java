@@ -1,13 +1,12 @@
 package chnu.edu.inno.model;
 
-
-/*
-  @author   george
-  @project   inno
-  @class  Item
-  @version  1.0.0 
-  @since 27/09/2026 - 18.59
-*/
+/**
+ * @author Rout
+ * @version 1.0.0
+ * @project lab5
+ * @class src\main\java\chnu\edu\inno\model\Item
+ * @since 13.11.2026 - 23.55
+ */
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,7 +25,7 @@ public class Item {
     private String id;
     private String name;
     private String code;
-    private  int quantity;
+    private int quantity;
 
     public Item(String name, String code, int quantity) {
         this.name = name;
@@ -38,11 +37,11 @@ public class Item {
     public final boolean equals(Object o) {
         if (!(o instanceof Item item)) return false;
 
-        return getId().equals(item.getId());
+        return java.util.Objects.equals(getId(), item.getId());
     }
 
     @Override
     public int hashCode() {
-        return getId().hashCode();
+        return java.util.Objects.hashCode(getId());
     }
 }
